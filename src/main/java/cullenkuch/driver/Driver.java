@@ -13,11 +13,11 @@ public class Driver {
 
         /*TO DO:
 
-        -toLowerCase when choosing a breed from returned list
-        -Add variables to query instead
+        -Add toLowerCase for all input responses.
         -Add the adoption record to the table at the end.
         -Query to get the adoption records in the beginning if needed.
         -Replace Array List with a manually expanding array like we did in class
+        -Remove duplicate dog breeds in my table
 
          */
         Menu myMenu = new Menu();

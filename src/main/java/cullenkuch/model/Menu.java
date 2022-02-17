@@ -77,7 +77,16 @@ public class Menu {
                 } while (!shedsValid);
 
 //                //DISPLAY RESULT OPTIONS
-                    PreparedStatement statement = conn.prepareStatement("SELECT breed FROM puppy WHERE size = 'small' AND temperament = 'active' AND sheds = 'a little'");
+                    PreparedStatement statement = conn.prepareStatement("SELECT breed FROM puppy WHERE size = ? AND temperament = ? AND sheds = ?");
+                    statement.setString(1, size);
+                    statement.setString(2, temperament);
+                    if(sheds.equals("yes")){
+                        sheds = "a little";
+                    } else {
+                        sheds = "a lot";
+                    }
+                    statement.setString(3, sheds);
+
                     ResultSet rs = null;
                     ArrayList<String> returnedBreeds = new ArrayList<String>();
                     boolean validPuppyChoice = false;
