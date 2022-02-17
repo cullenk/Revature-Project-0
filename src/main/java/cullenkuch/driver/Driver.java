@@ -1,12 +1,16 @@
 package cullenkuch.driver;
 
+import cullenkuch.dao.puppyDAO;
+import cullenkuch.model.Puppy;
 import cullenkuch.util.ConnectionUtil;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Driver {
     public static Connection conn = ConnectionUtil.getConnection();
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws SQLException {
 
         //Puppy Picker App
 
@@ -20,6 +24,8 @@ public class Driver {
         7) Congrats, you've found the best puppy for you! It's a male labrador retriever named Cooper!
         8) Print image of dog?
          */
+        puppyDAO firstTest = new puppyDAO();
+        firstTest.getAllPuppies();
 
     }
 }

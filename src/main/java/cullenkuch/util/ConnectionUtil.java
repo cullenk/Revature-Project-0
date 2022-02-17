@@ -11,6 +11,7 @@ import java.util.Properties;
 
 public class ConnectionUtil {
     private static Connection conn;
+    //constructor
     private ConnectionUtil(){
 
     }
@@ -33,7 +34,7 @@ public class ConnectionUtil {
                     e.printStackTrace();
                 }
             }
-        }catch(FileNotFoundException e){
+        } catch(FileNotFoundException e){
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
