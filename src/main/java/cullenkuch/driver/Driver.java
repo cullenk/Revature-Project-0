@@ -1,9 +1,8 @@
 package cullenkuch.driver;
 
-import cullenkuch.dao.puppyDAO;
-import cullenkuch.model.Puppy;
-import cullenkuch.util.ConnectionUtil;
 
+import cullenkuch.model.Menu;
+import cullenkuch.util.ConnectionUtil;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -12,20 +11,17 @@ public class Driver {
 
     public static void main(String[] args) throws SQLException {
 
-        //Puppy Picker App
+        /*TO DO:
 
-        /*
-        1) Do you prefer a small, medium or big dog?
-        2) Do you want it to be active or mellow in nature?
-        3) Does it need to be easy to groom? (Y/N?)
-        4) Here are the breed options best suited for you! Choose one.
-        5) You've chosen a _____. Do you want a male or female?
-        6) What would you like to name it?
-        7) Congrats, you've found the best puppy for you! It's a male labrador retriever named Cooper!
-        8) Print image of dog?
+        -toLowerCase when choosing a breed from returned list
+        -Add variables to query instead
+        -Add the adoption record to the table at the end.
+        -Query to get the adoption records in the beginning if needed.
+        -Replace Array List with a manually expanding array like we did in class
+
          */
-        puppyDAO firstTest = new puppyDAO();
-        firstTest.getAllPuppies();
+        Menu myMenu = new Menu();
+        myMenu.createMenu();
 
     }
 }
