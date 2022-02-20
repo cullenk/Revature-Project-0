@@ -1,13 +1,12 @@
 package cullenkuch.model;
 
+import cullenkuch.dao.AdoptionHistoryDAO;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import static cullenkuch.driver.Driver.conn;
-
-
 
 public class Menu {
 
@@ -20,7 +19,6 @@ public class Menu {
         System.out.println("Hi there! Are you looking to adopt a puppy today or look up adoption records?");
         String goal = scanner.nextLine();
         boolean validResponse = false;
-        int puppy_id;
         String first_name;
         String last_name;
         String size;
@@ -30,22 +28,42 @@ public class Menu {
         String puppy_gender;
         String breed;
 
+        boolean firstNameValid = false;
+        boolean lastNameValid = false;
         do {
-            //Adoption Logic
-            if (goal.equals("adopt")) {
+            //If the user wants to adopt
+            if (goal.equalsIgnoreCase("adopt")) {
                 System.out.println("Great, let's find you a puppy!");
                 validResponse = true;
                 System.out.println("First of all, what's your first name?");
-                first_name = scanner.nextLine();
+
+                //CHECK FOR FIRST NAME
+                do{
+                    first_name = scanner.nextLine();
+                    if(first_name.length() > 0){
+                        firstNameValid = true;
+                    } else {
+                        System.out.println("Oops, please enter a name at least one letter long.");
+                    }
+                } while(!firstNameValid);
+
+                //CHECK FOR LAST NAME
                 System.out.println("What's your last name?");
-                last_name = scanner.nextLine();
+                do{
+                    last_name = scanner.nextLine();
+                    if(last_name.length() > 0){
+                        lastNameValid = true;
+                    } else {
+                        System.out.println("Oops, please enter a name at least one letter long.");
+                    }
+                } while(!lastNameValid);
 
                 //CHECK FOR SIZE
                 boolean sizeValid = false;
+                System.out.println("Thanks " + first_name + " " + last_name + "!" + " " + "Are you interested in a puppy that will grow to be small, medium or large in size?");
                 do {
-                    System.out.println("Thanks " + first_name + " " + last_name + "!" + " " + "Are you interested in a puppy that will grow to be small, medium or large in size?");
                     size = scanner.nextLine();
-                    if (size.equals("small") || size.equals("medium") || size.equals("large")) {
+                    if (size.equalsIgnoreCase("small") || size.equalsIgnoreCase("medium") || size.equalsIgnoreCase("large")) {
                         sizeValid = true;
                     } else {
                         System.out.println("Oops, please choose a valid size of small, medium or large");
@@ -54,10 +72,10 @@ public class Menu {
 
                 //CHECK FOR TEMPERAMENT
                 boolean temperamentValid = false;
+                System.out.println("Got it! And would you prefer a puppy that's more mellow or active by nature?");
                 do {
-                    System.out.println("Got it! And would you prefer a puppy that's more mellow or active by nature?");
                     temperament = scanner.nextLine();
-                    if (temperament.equals("mellow") || temperament.equals("active")) {
+                    if (temperament.equalsIgnoreCase("mellow") || temperament.equalsIgnoreCase("active")) {
                         temperamentValid = true;
                     } else {
                         System.out.println("Oops, please choose a valid temperament of mellow or active");
@@ -66,62 +84,111 @@ public class Menu {
 
                 //CHECK FOR SHEDDING
                 boolean shedsValid = false;
+                System.out.println("Okay, does it matter if your puppy is easy to groom?");
                 do {
-                    System.out.println("Okay, does it matter if your puppy is easy to groom?");
                     sheds = scanner.nextLine();
-                    if (sheds.equals("yes") || sheds.equals("no")) {
+                    if (sheds.equalsIgnoreCase("yes") || sheds.equalsIgnoreCase("no")) {
                         shedsValid = true;
                     } else {
                         System.out.println("Oops, please choose a valid response of yes or no.");
                     }
                 } while (!shedsValid);
 
-//                //DISPLAY RESULT OPTIONS
+//                //DISPLAY RESULT OPTIONS FROM SQL QUERY
                     PreparedStatement statement = conn.prepareStatement("SELECT breed FROM puppy WHERE size = ? AND temperament = ? AND sheds = ?");
                     statement.setString(1, size);
                     statement.setString(2, temperament);
-                    if(sheds.equals("yes")){
+                    if(sheds.equalsIgnoreCase("yes")){
                         sheds = "a little";
-                    } else {
+                    } else if (sheds.equalsIgnoreCase("no")){
                         sheds = "a lot";
                     }
                     statement.setString(3, sheds);
 
                     ResultSet rs = null;
-                    ArrayList<String> returnedBreeds = new ArrayList<String>();
-                    boolean validPuppyChoice = false;
-//
+                    int currentBreedsArrayLength = 0;
+                    String[] returnedBreedsArray = new String[1];
                     rs = statement.executeQuery();
+
                     System.out.println("Fantastic! Based on what you've told me, here are some breeds that would suit you best. Which one would you like?");
+                    //Create expanding array to hold returned breeds, without using ArrayList
                     while (rs.next()) {
                         breed = rs.getString("breed");
-                        returnedBreeds.add(breed);
+                        if(currentBreedsArrayLength + 1 > returnedBreedsArray.length) {
+                            String[] biggerArray = new String[currentBreedsArrayLength * 2];
+                            for (int i = 0; i < returnedBreedsArray.length; i++) {
+                                biggerArray[i] = returnedBreedsArray[i];
+                            }
+                            returnedBreedsArray = biggerArray;
+                        }
+                        returnedBreedsArray[currentBreedsArrayLength] = breed;
+                        currentBreedsArrayLength++;
                         System.out.println(breed);
                     }
-                    do{
+
+                    //Check to see if the breed the user selects exists in the returned breed array
+                    boolean validPuppyChoice = false;
+
+                    while(true){
                         breed = scanner.nextLine();
-                        if (returnedBreeds.contains(breed)){
-                            validPuppyChoice = true;
-                        } else {
-                            System.out.println("Hmm, that breed isn't listed. Please choose a breed from the list above.");
+                        for (String s : returnedBreedsArray) {
+                            if (s != null && s.equalsIgnoreCase(breed)){
+                                validPuppyChoice = true;
+                            }
                         }
-                    } while(!validPuppyChoice);
+                        if (validPuppyChoice) break;
+                        else System.out.println("Hmm, that breed isn't listed. Please choose a breed from the list above.");
+                    }
 
-
+                //CHECK FOR PUPPY GENDER
+                boolean puppyGenderValid = false;
                 System.out.println("Great choice! Would you like your puppy to be male or female?");
-                puppy_gender = scanner.nextLine();
-                System.out.println("Lastly, what do you want to name your new puppy?");
-                puppy_name = scanner.nextLine();
-                System.out.println("Congratulations " + first_name + "!" + " " + "You're bringing home a " + puppy_gender + " " + breed + " puppy " + "named" + " " + puppy_name + ". Take good care of it!");
+                do{
+                    puppy_gender = scanner.nextLine();
+                    if (puppy_gender.equalsIgnoreCase("male") || puppy_gender.equalsIgnoreCase("female")) {
+                        puppyGenderValid = true;
+                    } else {
+                        System.out.println("Oops, please choose a valid response of male or female.");
+                    }
+                } while(!puppyGenderValid);
 
-                //Records Logic
+                //CHECK FOR PUPPY NAME
+                boolean puppyNameValid = false;
+                System.out.println("Lastly, what do you want to name your new puppy?");
+                do{
+                    puppy_name = scanner.nextLine();
+                    if (puppy_name.length() > 0) {
+                        puppyNameValid = true;
+                    } else {
+                        System.out.println("Oops, please enter a name at least one letter long.");
+                    }
+                } while(!puppyNameValid);
+
+
+                System.out.println("Congratulations " + first_name + "!" + " " + "You're bringing home a " + puppy_gender + " " + breed + " puppy " + "named" + " " + puppy_name + ". Take good care of it!");
+                System.out.println("I'll go ahead and add this adoption to our records as well.");
+
+                //Add the chosen puppy to records
+                PreparedStatement recordsStatement = conn.prepareStatement("INSERT INTO adoption_history (first_name, last_name, puppy_breed, puppy_gender, puppy_name) VALUES (?, ?, ?, ?, ?)");
+
+                recordsStatement.setString(1, first_name);
+                recordsStatement.setString(2, last_name);
+                recordsStatement.setString(3, breed);
+                recordsStatement.setString(4, puppy_gender);
+                recordsStatement.setString(5, puppy_name);
+                recordsStatement.executeUpdate();
+
+
+                //If the user wants records
             } else if (goal.equals("records")) {
                 System.out.println("Here's our adoption history:");
                 validResponse = true;
+                AdoptionHistoryDAO records = new AdoptionHistoryDAO();
+                records.getAdoptionHistory();
             }
 
 
-            //Invalid Logic
+            //If the user doesn't choose records or adopt
             else {
                 System.out.println("Oops, I didn't catch that. You can say 'adopt' or 'records'.");
                 goal = scanner.nextLine();

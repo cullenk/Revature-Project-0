@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 import static cullenkuch.driver.Driver.conn;
 
-public class adoption_historyDAO {
+public class AdoptionHistoryDAO {
 
     //constructor
-    public adoption_historyDAO(){
+    public AdoptionHistoryDAO(){
 
     }
 
@@ -25,7 +25,11 @@ public class adoption_historyDAO {
             String puppy_gender = rs.getString("puppy_gender");
             String puppy_name = rs.getString("puppy_name");
 
-            System.out.println(adopter_id + " " + first_name + " " + last_name + " " + puppy_breed + " " + puppy_gender + " " + puppy_name);
+            System.out.println(adopter_id + " " + first_name + " " + last_name + " " + "adopted a " + puppy_gender + " " + puppy_breed + " " + "named " + puppy_name);
         }
+    }
+
+    public void deleteAdoptionRecord(int id, String firstName, String lastName){
+
     }
 }

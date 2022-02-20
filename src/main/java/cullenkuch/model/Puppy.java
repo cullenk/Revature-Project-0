@@ -3,18 +3,23 @@ package cullenkuch.model;
 public class Puppy {
     //Variables
     private int puppy_id;
-    private String breed;
+    public String breed;
     private String temperament;
     private String size;
     private String sheds;
 
     //Constructor Method
-    public Puppy(int puppy_id, String breed, String temperament, String size, String sheds) {
-        this.puppy_id = puppy_id;
+    public Puppy(String breed, String temperament, String size, String sheds) {
         this.breed = breed;
         this.temperament = temperament;
         this.size = size;
         this.sheds = sheds;
+    }
+
+    //Override the basic toString method so I can print objects and view for testing
+    @Override
+    public String toString() {
+        return this.breed + " " + this.temperament + " " + this.size + " " + this.sheds;
     }
 
     //Getters and Setters for all Variables
