@@ -8,7 +8,7 @@ public class Puppy {
     private String size;
     private String sheds;
 
-    //Constructor Method
+    //Constructor Methods
     public Puppy(String breed, String temperament, String size, String sheds) {
         this.breed = breed;
         this.temperament = temperament;
@@ -16,10 +16,17 @@ public class Puppy {
         this.sheds = sheds;
     }
 
+    public Puppy(String breed) {
+    }
+
+    public Puppy() {
+
+    }
+
     //Override the basic toString method so I can print objects and view for testing
     @Override
     public String toString() {
-        return this.breed + " " + this.temperament + " " + this.size + " " + this.sheds;
+        return this.breed + "s" + " are " + this.temperament + " in temperament, " + this.size + " in size and usually shed " + this.sheds + ".";
     }
 
     //Getters and Setters for all Variables

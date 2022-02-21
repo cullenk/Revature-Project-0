@@ -2,7 +2,6 @@ package cullenkuch.dao;
 
 import cullenkuch.model.Puppy;
 
-import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,10 +14,7 @@ public class PuppyDAO {
 
     }
 
-    public void getAllPuppies() throws SQLException {
-        int currentPuppyArrayLength = 0;
-        String[] allPuppiesArray = new String[1];
-
+    public void getAllBreeds() throws SQLException {
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM puppy");
         ResultSet rs = null;
         rs = statement.executeQuery();

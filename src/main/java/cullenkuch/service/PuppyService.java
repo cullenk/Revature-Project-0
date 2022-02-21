@@ -17,6 +17,31 @@ public class PuppyService {
         puppydao = dao;
     }
 
+    public boolean getAllBreeds(){
+        try{
+            Puppy p = new Puppy();
+            puppydao.getAllBreeds();
+            System.out.println("Successfully returning all breeds");
+            return true;
+        } catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean getBreedDetails(String breed){
+        try{
+            Puppy p = new Puppy(breed);
+            p.breed = breed;
+            puppydao.getBreedDetails(breed);
+            System.out.println("Successfully checking breed: " + breed);
+            return true;
+        } catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean addNewBreed(String breed, String temperament, String size, String sheds){
         try{
             Puppy p = new Puppy(breed, temperament, size, sheds);
@@ -28,17 +53,5 @@ public class PuppyService {
             return false;
         }
     }
-
-//    public Painting getPainting(String userInput){
-//        if(userInput.length()<=0){
-//            return null;
-//        }
-//        try {
-//            return paintingdao.getPainting(userInput);
-//        }catch(SQLException e){
-//            return null;
-//        }
-//    }
-
 
 }

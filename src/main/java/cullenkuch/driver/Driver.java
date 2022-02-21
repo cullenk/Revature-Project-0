@@ -18,16 +18,19 @@ public class Driver {
 
         -Add testing methods and Mockito
         -Add a method to remove a record by first and last name
-        -Add a method to add a new dog breed option
-        -Error if no breeds match (small active shedder)
-        -add more dog options for every result combo
+        -Error if no breeds match?
+        -Create Services for adoption history table
          */
 
         PuppyDAO testPuppyDao = new PuppyDAO();
+//        testPuppyDao.getBreedDetails("Labrador Retriever");
+        testPuppyDao.getAllBreeds();
 //
         PuppyService puppyService = new PuppyService();
-        puppyService.addNewBreed("Bichon Frise", "active", "small", "a lot");
-//
+//        puppyService.addNewBreed("Bichon Frise", "active", "small", "a lot");
+//        puppyService.getBreedDetails("Labradoodle");
+//        puppyService.getAllBreeds();
+
 //        AdoptionHistoryDAO records = new AdoptionHistoryDAO();
 //        records.getAdoptionHistory();
 
