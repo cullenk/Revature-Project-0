@@ -29,17 +29,18 @@ public class PuppyService {
         }
     }
 
-    public boolean getBreedDetails(String breed){
+    public Puppy getBreedDetails(String breed){
+        Puppy myPuppy = null;
         try{
-            Puppy p = new Puppy(breed);
-            p.breed = breed;
+            myPuppy = new Puppy(breed);
+            myPuppy.breed = breed;
             puppydao.getBreedDetails(breed);
             System.out.println("Successfully checking breed: " + breed);
-            return true;
+
         } catch(SQLException e){
             e.printStackTrace();
-            return false;
         }
+        return myPuppy;
     }
 
     public boolean addNewBreed(String breed, String temperament, String size, String sheds){

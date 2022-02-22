@@ -180,8 +180,8 @@ public class Menu {
 
 
                 //If the user wants records
-            } else if (goal.equals("records")) {
-                System.out.println("Here's our adoption history:");
+            } else if (goal.equalsIgnoreCase("records")) {
+                System.out.println("Here are our adoption records:");
                 validResponse = true;
                 AdoptionHistoryDAO records = new AdoptionHistoryDAO();
                 records.getAdoptionHistory();
